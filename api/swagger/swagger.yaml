@@ -1,0 +1,96 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Local Deliver Service API
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+x-a127-config: {}
+x-a127-services: {}
+paths:
+  /products:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: local_pickup 
+    x-a127-apply: {}
+    get:
+      description: Returns the products from a query with local delivery marked
+      # used as the method name of the controller
+      operationId: getProducts
+      parameters:
+        - name: keyword
+          in: query
+          description: product serach parameter
+          required: true
+          type: string
+        - name: latlong
+          in: query
+          description: user latitude and longitude, seperated by a comma
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema: {}
+            # a pointer to a definition
+            # $ref: "#/definitions/ProductResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /delivery_quote:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: postmates_quote 
+    x-a127-apply: {}
+    get:
+      description: Returns the delivery quote 
+      # used as the method name of the controller
+      operationId: getQuote
+      parameters:
+        - name: dropoff_address 
+          in: query
+          description: delivery address
+          required: true
+          type: string
+        - name: pickup_address
+          in: query
+          description: Store Address ex. http://127.0.0.1:10010/delivery_quote?dropoff_address=4247-7th-ave-ne,-seattle,-wa-98105&pickup_address=76-s-lander-st,-seattle,-wa-98134
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema: {}
+            # a pointer to a definition
+            # $ref: "#/definitions/ProductResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  ProductResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
