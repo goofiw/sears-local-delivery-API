@@ -59,6 +59,11 @@ function getProducts(req, res){
           });
         }).then(function(localResults) {
           return localResults.filter(function(n){ return n[0] != undefined});
+        }).then(function(filteredResults) {
+          return filteredResults.map(function(item){ 
+            item[0] = item[0][0];
+            return item;
+          })
         })
         .then(function(results) { console.log('testing \n\n\n\n\n\n\n\n\n'); res.send( {data:results})})
           .catch(function(e){console.log(e);})
