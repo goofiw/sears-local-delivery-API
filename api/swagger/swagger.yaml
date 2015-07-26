@@ -25,7 +25,8 @@ paths:
     x-swagger-router-controller: local_pickup 
     x-a127-apply: {}
     get:
-      description: Returns the products from a query with local delivery marked
+      description: Returns the local products and pick up store from a query ex. http://127.0.0.1:10010/products?keyword=ball&latlong=47.6568777,-122.3159348
+
       # used as the method name of the controller
       operationId: getProducts
       parameters:
@@ -36,8 +37,7 @@ paths:
           type: string
         - name: latlong
           in: query
-          description: user latitude and longitude, seperated by a comma ex. http://127.0.0.1:10010/products?keyword=ball&latlong=47.6568777,-122.3159348
-          required: true
+          description: user latitude and longitude, seperated by a comma           required: true
           type: string
       responses:
         "200":
@@ -61,12 +61,13 @@ paths:
       parameters:
         - name: drop_off_latlong 
           in: query
-          description: delivery address
+          description: delivery address ex. http://127.0.0.1:10010/delivery_quote?drop_off_latlong=47.6568777,-122.3159348&pickup_store_number=0002309
+
           required: true
           type: string
         - name: pickup_store_number
           in: query
-          description: Store Address ex. http://127.0.0.1:10010/delivery_quote?drop_off_latlong=47.6568777,-122.3159348&pickup_store_number=0002309
+          description: Store Address           
           required: true
           type: string
       responses:
@@ -85,7 +86,8 @@ paths:
     x-swagger-router-controller: update_delivery 
     x-a127-apply: {}
     get:
-      description: returns the updates the delivery status
+      description: returns the updates the delivery status ex. http://127.0.0.1:10010/delivery_quote?drop_off_latlong=47.6568777,-122.3159348&pickup_store_number=0002309
+
       # used as the method name of the controller
       operationId: getUpdate
       parameters:
@@ -110,7 +112,7 @@ paths:
     x-swagger-router-controller: submit_delivery 
     x-a127-apply: {}
     get:
-      description: Returns the delivery quote 
+      description: Submits a deliver to Postmates http://127.0.0.1:10010/submit_delivery?drop_off_latlong=36.047763,%20-115.276876&pickup_store_number=0001709&manifest=puppies&phone_number=555-555-5555&quote_id=dqt_KQJ00faJhqsYHV&customer_name=Arnold 
       # used as the method name of the controller
       operationId: getQuote
       parameters:
