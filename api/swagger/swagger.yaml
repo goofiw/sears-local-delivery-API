@@ -36,7 +36,7 @@ paths:
           type: string
         - name: latlong
           in: query
-          description: user latitude and longitude, seperated by a comma
+          description: user latitude and longitude, seperated by a comma ex. http://127.0.0.1:10010/products?keyword=ball&latlong=47.6568777,-122.3159348
           required: true
           type: string
       responses:
@@ -59,14 +59,59 @@ paths:
       # used as the method name of the controller
       operationId: getQuote
       parameters:
-        - name: dropoff_address 
+        - name: drop_off_latlong 
           in: query
           description: delivery address
           required: true
           type: string
-        - name: pickup_address
+        - name: pickup_store_number
           in: query
-          description: Store Address ex. http://127.0.0.1:10010/delivery_quote?dropoff_address=4247-7th-ave-ne,-seattle,-wa-98105&pickup_address=76-s-lander-st,-seattle,-wa-98134
+          description: Store Address ex. http://127.0.0.1:10010/delivery_quote?drop_off_latlong=47.6568777,-122.3159348&pickup_store_number=0002309
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema: {}
+            # a pointer to a definition
+            # $ref: "#/definitions/ProductResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /submit_delivery:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: submit_delivery 
+    x-a127-apply: {}
+    get:
+      description: Returns the delivery quote 
+      # used as the method name of the controller
+      operationId: getQuote
+      parameters:
+        - name: drop_off_latlong 
+          in: query
+          description: delivery address
+          required: true
+          type: string
+        - name: pickup_store_number
+          in: query
+          description: pickup_store_number 
+          required: true
+          type: string
+        - name: manifest 
+          in: query
+          description: Items Purchased 
+          required: true
+          type: string
+        - name: phone_number 
+          in: query
+          description: customer phone number (555-555-555) 
+          required: true
+          type: string
+        - name: quote_id 
+          in: query
+          description: Quote id from delivery quote 
           required: true
           type: string
       responses:
