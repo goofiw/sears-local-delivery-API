@@ -57,31 +57,28 @@ function getProducts(req, res){
         res.send(error);
       } else {
         searchResults = JSON.parse(body);
-        function cbFunc(cb) {
           products = searchResults.SearchResults.Products
-          products.forEach(function(item, idx){
-            var partNumber = item.Id.PartNumber.replace(/P/, '')
-            setTimeout(getLocalProduct(partNumber, zip, function(result){
-              var responses = 0,
-                  temp = [];
-                if (result){
-                  console.log('result  \n\n\n\n', result, 'end result \n\n\n');
-                  console.log('item \n\n', item, 'end item \n\n\n\n');
-                  temp = [result[0], item];
-                  localResults.push(temp);
-                  responses++;
-                  console.log('\n\n\n local results ',localResults, "\n\n\n\n\n\n\n\n\n\n");
-                }
-                //if(products.length - 1 == responses) {
-                //}
-              }), 100 * idx);
-          })
-          return cb(localResults);
+          new Promise(function(){
+            Promise.each(products,function(item, idx){
+              console.log(idx);
+              var partNumber = item.Id.PartNumber.replace(/P/, '')
+              getLocalProduct(partNumber, zip, function(result){
+                var responses = 0,
+                    temp = [];
+                  if (result){
+                    console.log('result  \n\n\n\n', result, 'end result \n\n\n');
+                    console.log('item \n\n', item, 'end item \n\n\n\n');
+                    temp = [result[0], item];
+                    localResults.push(temp);
+                    console.log('\n\n\n local results ',localResults, "\n\n\n\n\n\n\n\n\n\n");
+                  }
+                })
+            })          
+            console.log(localResults, '\n\n MMMMMMMMMMMMM');
+          }).then(function() { console.log(localResults, '\n\n AHHHH'); res.send(localResults)});
+
         }
-        cbFunc(function(localResults){
-          res.send(localResults);
-        })
       }
-    })
+    )
   })
 }
