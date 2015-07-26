@@ -80,6 +80,31 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /update:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: update_delivery 
+    x-a127-apply: {}
+    get:
+      description: returns the updates the delivery status
+      # used as the method name of the controller
+      operationId: getUpdate
+      parameters:
+        - name: delivery_id 
+          in: query
+          description: deliver_id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema: {}
+            # a pointer to a definition
+            # $ref: "#/definitions/ProductResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /submit_delivery:
     # binds a127 app logic to a route
     x-swagger-router-controller: submit_delivery 
@@ -112,6 +137,11 @@ paths:
         - name: quote_id 
           in: query
           description: Quote id from delivery quote 
+          required: true
+          type: string
+        - name: customer_name 
+          in: query
+          description: Name of customer 
           required: true
           type: string
       responses:

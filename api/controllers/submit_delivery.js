@@ -22,11 +22,15 @@ function toTitleCase(str){
 }
 
 function submitDelivery(req, res){
-  var dropOff_latlong = req.swagger.params.drop_off_latlong.value,
+  var dropoff_latlong = req.swagger.params.drop_off_latlong.value,
       pickup_store = req.swagger.params.pickup_store_number.value,
       manifest = req.swagger.params.manifest.value,
-      custPhone = req.swagger.params.phone_number.value,
-      quoteId = req.swagger.params.quote_id.value;
+      custPhoneNumber = req.swagger.params.phone_number.value,
+      quoteId = req.swagger.params.quote_id.value,
+      custName = req.swagger.params.customer_name.value,
+      storeName = 'Sears',
+      notes = "Stay Calm, but hurry up",
+      storePhoneNumber = '555-555-5555',
       dropoffUrl,
       pickupUrl,
       pickup_address,
@@ -47,10 +51,17 @@ function submitDelivery(req, res){
       //storeAddress = '1320-1322 North 41st Street, Seattle, WA 98103';
       var formData = {
         dropoff_address: dropoff_address, 
-        pickup_address: storeAddress
+        pickup_address: storeAddress,
+        manifest: manifest,
+        pickup_name: storeName,
+        pickup_phone_number: storePhoneNumber,
+        pickup_notes: notes,
+        dropoff_name: custName,
+        dropoff_phone_number: custPhoneNumber,
+        quote_id: quoteId
       };
       console.log(formData);
-      var quoteUrl = 'https://' + secrets.postmatesKey + ':@api.postmates.com/v1/customers/' + secrets.postmatesCustomerId + '/delivery_quotes';
+      var quoteUrl = 'https://' + secrets.postmatesKey + ':@api.postmates.com/v1/customers/' + secrets.postmatesCustomerId + '/deliveries';
       console.log(quoteUrl, '\n', dropoff_address, '\n', storeAddress);
       
       request.post({ url: quoteUrl,
