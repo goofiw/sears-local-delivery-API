@@ -1,1 +1,1 @@
-Skeleton project for Apigee-127
+An API built using Apigee-127 that uses Sears and Postemates APIs to easily find Sears products available for immediate in-store pick up, grabs a delivery quote from Postemates, and allows for ordering and real time delivery updates, including the actual location of the courier, from postmates.
