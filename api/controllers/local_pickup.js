@@ -37,6 +37,13 @@ function getNearestStore(zip){
   })
 }
 
+function merge(obj1, obj2){
+  var obj3 = {};
+  for (var i in obj1) { obj3[i] = obj1[i]}
+  for (var i in obj2) { obj3[i] = obj2[i]}
+  return obj3;
+}
+
 function getProducts(req, res){
   var query = req.swagger.params.keyword.value,
       searchResults,
@@ -62,6 +69,7 @@ function getProducts(req, res){
         }).then(function(filteredResults) {
           return filteredResults.map(function(item){ 
             item[0] = item[0][0];
+            item = merge(item[0], item[1]);
             return item;
           })
         })
